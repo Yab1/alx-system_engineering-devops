@@ -10,9 +10,9 @@ subdomain_inf () {
 if [ $# -eq 1 ]
 then
     subdomain_inf $1 "www"
-    subdomain_inf $1 "lb-01"18.209.224.96
-    subdomain_inf $1 "web-01"18.214.87.226
-    subdomain_inf $1 "web-02"100.25.38.197
+    subdomain_inf $1 "lb-01 18.209.224.96"
+    subdomain_inf $1 "web-01 18.214.87.226"
+    subdomain_inf $1 "web-02 100.25.38.197"
 elif [ $# -gt 1 ]
 then
     subdomain_inf $1 $2
