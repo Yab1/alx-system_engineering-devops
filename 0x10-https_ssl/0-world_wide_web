@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-#Configure domain zone so that the subdomain www points to your load-balancer IP
-#shellcheck disable=SC2059
-subdomain()
-{
-    RECORD_TYPE=$(dig "$1" | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/{print $4}')
-    DEST=$(dig "$1" | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/{print $5}')
-    echo The subdomain "$2" is a "$RECORD_TYPE" record and points to "$DEST"
+# Prints subdomains info
+
+subdomain_inf () {
+    RT=$(dig $2.$1 | grep -A1 'ANSWER SECTION' | awk '{print $4}' | tail -n 1)
+    DEST=$(dig $2.$1 | grep -A1 'ANSWER SECTION' | awk '{print $5}' | tail -n 1)
+    echo "The subdomain $2 is a $RT record and points to $DEST"
 }
 
-if [ "$2" ]
+if [ $# -eq 1 ]
 then
-    subdomain "$2.$1" "$2"
-else
-    subdomain "www.$1" www
-    subdomain "lb-01.$1" lb-01
-    subdomain "web-01.$1" web-01
-    subdomain "web-02.$1" web-02
+    subdomain_inf $1 "www"
+    subdomain_inf $1 "lb-01"
+    subdomain_inf $1 "web-01"
+    subdomain_inf $1 "web-02"
+elif [ $# -gt 1 ]
+then
+    subdomain_inf $1 $2
 fi
